@@ -1,17 +1,19 @@
-package com.example.ics.dto;
+package com.example.ics.dto.chatGPT;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 
 import java.util.List;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
 public class ChatGPTResponse {
     private String id;
     private String object;
     private Integer created;
     private String model;
-    private List<Choice> choices;
     private UseStatistics usage;
+    private List<Choices> choices;
 
     @Getter
     public static class UseStatistics {
@@ -20,17 +22,18 @@ public class ChatGPTResponse {
         private Integer total_tokens;
     }
 
-
     @Getter
-    public static class Choice {
+    public static class Choices {
         private Integer index;
-        private ReceivedMessage message;
+        private Message message;
         private String finish_reason;
+
     }
 
     @Getter
-    public static class ReceivedMessage {
+    public static class Message {
         private String role;
         private String content;
+
     }
 }

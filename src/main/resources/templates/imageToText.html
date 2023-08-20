@@ -3,25 +3,13 @@
 <div layout:fragment="content">
     <div>
         <form th:action="@{/image/convert}" method="post" enctype="multipart/form-data">
-            <input type="file" name="imageFile" multiple/>
+            <input type="file" name="imageFiles" multiple/>
             <button type="submit">upload</button>
         </form>
     </div>
-    <div>
-        <table th:if="${ocrResults}">
-            <thead>
-                <tr>
-                    <th>이미지</th>
-                    <th>텍스트</th>
-                </tr>
-            </thead>
-            <tbody>
-            <tr th:each="entry : ${ocrResults}">
-                <td><img th:src="${entry.key}" alt="Upload Image"></td>
-                <td th:text="${entry.value}"></td>
-            </tr>
-            </tbody>
-        </table>
+    <div th:if="${ocrResults}">
+        <h2>Results of extracting text from images</h2>
+        <p th:text="${ocrResults}"></p>
     </div>
 </div>
 </html>
