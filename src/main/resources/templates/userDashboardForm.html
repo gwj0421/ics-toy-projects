@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<!-- layout.html을 상속받음 -->
+<html layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+    <title>User Dashboard</title>
+    <style>
+        /* 테이블의 외곽선 스타일 설정 */
+        table {
+            border-collapse: collapse; /* 테이블 셀 경계를 병합하여 단일 외곽선으로 만듦 */
+            width: 100%; /* 테이블 너비 설정 */
+        }
+
+        /* 테이블 헤더 (<th>)와 셀 (<td>)의 스타일 설정 */
+        th, td {
+            border: 1px solid #ccc; /* 테두리 선 스타일 설정 */
+            padding: 8px; /* 셀 안의 여백 설정 */
+            text-align: left; /* 텍스트 정렬 설정 */
+        }
+
+        /* 짝수 행 배경색 설정 (선택적) */
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<!-- 상속된 템플릿에서 content 블록을 채워넣음 -->
+<th:block layout:fragment="content">
+    <div>
+      <form th:action="@{/user/deleteAll}" method="post">
+        <button type="submit">전체 삭제</button>
+      </form>
+    </div>
+    <table>
+        <thead>
+        <tr>
+            <th>name</th>
+            <th>userID</th>
+            <th>userPassword</th>
+            <th>email</th>
+            <th>isAccountNonExpired</th>
+            <th>isAccountNonLocked</th>
+            <th>isCredentialsNonExpired</th>
+            <th>isEnabled</th>
+            <th>clovaRemainingCnt</th>
+            <th>chatGTPRemainingCnt</th>
+            <th>role</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.name}"></td>
+            <td th:text="${user.userID}"></td>
+            <td th:text="${user.userPassword}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.isAccountNonExpired}"></td>
+            <td th:text="${user.isAccountNonLocked}"></td>
+            <td th:text="${user.isCredentialsNonExpired}"></td>
+            <td th:text="${user.isEnabled}"></td>
+            <td th:text="${user.clovaRemainingCnt}"></td>
+            <td th:text="${user.chatGTPRemainingCnt}"></td>
+            <td th:text="${user.role}"></td>
+        </tr>
+        </tbody>
+    </table>
+</th:block>

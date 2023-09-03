@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<!-- layout.html을 상속받음 -->
+<html layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+    <title>TextSummary</title>
+</head>
+
+<!-- 상속된 템플릿에서 content 블록을 채워넣음 -->
+<th:block layout:fragment="content">
+    <form method="post">
+        <textarea name="textContent" rows="10" cols="50"></textarea>
+        <button type="submit">Summarize</button>
+    </form>
+
+    <div th:if="${summaryResult}">
+        <h2>Summary Result:</h2>
+        <p th:text="${summaryResult}"></p>
+    </div>
+</th:block>

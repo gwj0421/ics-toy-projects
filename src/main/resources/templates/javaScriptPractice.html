@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<input id="elem" type="button" value="please click" onclick="alert('before')">
+<script>
+    'use strict';
+    let obj = {
+        handleEvent(object) {
+            alert(event.type + " : " + event.currentTarget);
+        }
+    }
+    elem.addEventListener('click', obj);
+</script>
+</body>
+</html>
