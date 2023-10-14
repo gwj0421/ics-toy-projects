@@ -1,9 +1,9 @@
 package com.example.ics.service;
 
 
-import com.example.ics.dto.Clova.ClovaContentType;
-import com.example.ics.dto.Clova.ClovaOCRResponse;
-import com.example.ics.dto.Clova.ClovaOcrMessage;
+import com.example.ics.dto.clova.ClovaContentType;
+import com.example.ics.dto.clova.ClovaOCRResponse;
+import com.example.ics.dto.clova.ClovaOcrMessage;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
@@ -16,6 +16,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+//import org.springframework.web.reactive.function.BodyInserters;
+//import org.springframework.web.reactive.function.client.WebClient;
+//import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;

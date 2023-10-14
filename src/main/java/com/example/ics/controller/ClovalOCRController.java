@@ -1,6 +1,6 @@
 package com.example.ics.controller;
 
-import com.example.ics.dto.Clova.ClovaImageType;
+import com.example.ics.dto.clova.ClovaImageType;
 import com.example.ics.service.ClovaOCRService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

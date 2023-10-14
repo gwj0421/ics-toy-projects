@@ -1,18 +1,13 @@
 package com.example.ics.controller;
 
-import com.example.ics.dto.user.SiteUser;
-import com.example.ics.dto.user.UserCreateForm;
-import com.example.ics.dto.user.UserLoginForm;
+import com.example.ics.dto.user.*;
 import com.example.ics.service.UserManagementService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/user")
@@ -44,13 +39,12 @@ public class SiteUserController {
         if (bindingResult.hasErrors()) {
             return "signupForm";
         }
-        if (UserManagementService.checkBothPasswordNotEqual(userCreateForm.getPassword1(), userCreateForm.getPassword2())) {
+        if (!userCreateForm.getPassword1().equals(userCreateForm.getPassword2())) {
             bindingResult.rejectValue("password2", "passwordInCorrect", "2개의 비밀번호가 맞지 않습니다");
         }
         try {
-            SiteUser newcomer = userManagementService.create(userCreateForm.getName(), userCreateForm.getUserID(), userCreateForm.getPassword1(), userCreateForm.getEmail());
-            log.info("gwj : " + newcomer.toString());
-
+            SiteUser user = userManagementService.createUser(userCreateForm.getUserID(), userCreateForm.getName(), userCreateForm.getPassword1(), ProviderType.LOCAL, RoleType.USER);
+            log.info("gwj : user login = ",user.getUsername());
         } catch (Exception e) {
             bindingResult.rejectValue("signupFailed", e.getMessage());
             return "signupForm";
@@ -64,9 +58,4 @@ public class SiteUserController {
         return "userDashboardForm";
     }
 
-    @PostMapping("/deleteAll")
-    public String deleteAll() {
-        userManagementService.deleteUserDatabase();
-        return "redirect:/user/dashboard";
-    }
 }

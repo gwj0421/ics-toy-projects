@@ -3,19 +3,20 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <th:block layout:fragment="content">
-    <div>
-        <div th:if="${principalUsername} or ${principalAuthorities}">
-            <p th:text="'이름 : ' + ${principalUsername}" th:if="${principalUsername}"></p>
-            <p th:text="'권한 : ' + ${principalAuthorities}" th:if="${principalAuthorities}"></p>
-        </div>
+    <div sec:authorize="isAuthenticated()">
+        <div th:text="|이름 : ${#authentication.principal.username}|"></div>
+        <div th:text="|인증된 플랫폼 : ${#authentication.principal.providerType}|"></div>
+        <div th:text="|역할 : ${#authentication.principal.roleType}|"></div>
     </div>
     <ul>
-        <li><a th:href="@{/user/login}" sec:authorize="isAnonymous()">login</a></li>
-        <li><a th:href="@{/user/signup}" sec:authorize="isAuthenticated()">signup</a></li>
-        <li><a th:href="@{/user/logout}">로그아웃</a>  </li>
-        <li><a th:href="@{/user/dashboard}" sec:authorize="isAuthenticated()">dashboard</a></li>
-        <li><a th:href="@{/image/extractTextFromImage}" sec:authorize="isAuthenticated()">Extract text from image</a></li>
-        <li><a th:href="@{/text/summarizeText}" sec:authorize="isAuthenticated()">Summarize text</a></li>
+        <li sec:authorize="isAnonymous()"><a th:href="@{/user/login}">login</a></li>
+        <li sec:authorize="isAnonymous()"><a th:href="@{/user/signup}">signup</a></li>
+        <li sec:authorize="isAuthenticated()"><a th:href="@{/user/logout}">로그아웃</a></li>
+        <li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/user/dashboard}">dashboard</a></li>
+        <li sec:authorize="isAuthenticated()"><a th:href="@{/image/extractTextFromImage}"
+                                                 sec:authorize="isAuthenticated()">Extract text from image</a></li>
+        <li sec:authorize="isAuthenticated()"><a th:href="@{/text/summarizeText}" sec:authorize="isAuthenticated()">Summarize
+            text</a></li>
 
     </ul>
 </th:block>

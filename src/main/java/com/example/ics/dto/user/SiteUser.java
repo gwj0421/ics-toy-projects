@@ -1,55 +1,72 @@
 package com.example.ics.dto.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.*;
 
-@Entity
+import java.time.LocalDateTime;
+
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter
+@NoArgsConstructor
+@Entity
+@Table(name = "TB_USER")
 public class SiteUser {
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
-    private Integer id;
+    @Column(name = "ID")
+    private Long id;
 
-    @Column(length = 100)
-    private String name;
+    @Column(name = "USER_ID", length = 64, unique = true)
+    @NotNull
+    @Size(max = 64)
+    private String userId;
 
-    @Column(unique = true)
-    private String userID;
-    private String userPassword;
-    @Column(unique = true)
-    private String email;
+    @Column(name = "USERNAME", length = 100)
+    @NotNull
+    @Size(max = 100)
+    private String username;
 
-    private boolean isAccountNonExpired;
-    private boolean isAccountNonLocked;
-    private boolean isCredentialsNonExpired;
-    private boolean isEnabled;
+    @JsonIgnore
+    @Column(name = "PASSWORD", length = 128)
+    @NotNull
+    @Size(max = 128)
+    private String password;
 
-    private int clovaRemainingCnt;
-    private int chatGTPRemainingCnt;
+    @Column(name = "IS_VERIFIED_EMAIL")
+    @NotNull
+    private boolean isVerifiedEmail;
 
-    private String role;
+    @Column(name = "PROVIDER_TYPE", length = 20)
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private ProviderType providerType;
 
-    @Builder
-    public SiteUser(String name, String userID, String userPassword, String email, boolean isAccountNonExpired, boolean isAccountNonLocked, boolean isCredentialsNonExpired, boolean isEnabled, int clovaRemainingCnt, int chatGTPRemainingCnt, String role) {
-        this.name = name;
-        this.userID = userID;
-        this.userPassword = userPassword;
-        this.email = email;
-        this.isAccountNonExpired = isAccountNonExpired;
-        this.isAccountNonLocked = isAccountNonLocked;
-        this.isCredentialsNonExpired = isCredentialsNonExpired;
-        this.isEnabled = isEnabled;
-        this.clovaRemainingCnt = clovaRemainingCnt;
-        this.chatGTPRemainingCnt = chatGTPRemainingCnt;
-        this.role = role;
+    @Column(name = "ROLE_TYPE", length = 20)
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private RoleType roleType;
+
+    @Column(name = "CREATED_AT")
+    @NotNull
+    private LocalDateTime createdAt;
+
+    @Column(name = "MODIFIED_AT")
+    @NotNull
+    private LocalDateTime modifiedAt;
+
+    public SiteUser(String userId, String username, boolean isVerifiedEmail, ProviderType providerType, RoleType roleType, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+        this.userId = userId;
+        this.username = username;
+        this.isVerifiedEmail = isVerifiedEmail;
+        this.providerType = providerType;
+        this.roleType = roleType;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
     }
 
-    private void addRole(String role) {
-        this.role += "," + role;
-    }
+
 }

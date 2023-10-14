@@ -1,4 +1,4 @@
-package com.example.ics.config;
+package com.example.ics.handler;
 
 import com.example.ics.error.LoginFailureMessage;
 import jakarta.servlet.http.HttpServletRequest;

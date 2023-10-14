@@ -1,4 +1,4 @@
-package com.example.ics.dto.Clova;
+package com.example.ics.dto.clova;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;

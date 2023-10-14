@@ -1,4 +1,4 @@
-package com.example.ics.dto.Clova;
+package com.example.ics.dto.clova;
 
 public enum ClovaImageType {
     JPG("image/jpg","jpg"),
