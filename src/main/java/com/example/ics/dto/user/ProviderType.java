@@ -7,5 +7,5 @@ public enum ProviderType {
     LOCAL,
     FACEBOOK,
     GOOGLE,
-    GITHUB;
+    GITHUB
 }

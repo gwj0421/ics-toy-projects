@@ -9,7 +9,7 @@ public class GithubOAUth2UserInfo extends OAuth2UserInfo {
 
     @Override
     public String getId() {
-        return (String) attributes.get("login");
+        return (String) attributes.get("node_id");
     }
 
     @Override

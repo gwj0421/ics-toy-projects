@@ -43,8 +43,7 @@ public class SiteUserController {
             bindingResult.rejectValue("password2", "passwordInCorrect", "2개의 비밀번호가 맞지 않습니다");
         }
         try {
-            SiteUser user = userManagementService.createUser(userCreateForm.getUserID(), userCreateForm.getName(), userCreateForm.getPassword1(), ProviderType.LOCAL, RoleType.USER);
-            log.info("gwj : user login = ",user.getUsername());
+            userManagementService.createUser(userCreateForm.getUserID(), userCreateForm.getName(), userCreateForm.getPassword1(), ProviderType.LOCAL, RoleType.USER);
         } catch (Exception e) {
             bindingResult.rejectValue("signupFailed", e.getMessage());
             return "signupForm";

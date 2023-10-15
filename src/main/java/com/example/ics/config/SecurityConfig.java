@@ -5,6 +5,7 @@ import com.example.ics.config.properties.CorsProperty;
 import com.example.ics.dto.user.RoleType;
 import com.example.ics.handler.CustomAuthenticationFailureHandler;
 import com.example.ics.oauth.dto.token.AuthTokenProvider;
+import com.example.ics.oauth.exception.RestAuthenticationEntryPoint;
 import com.example.ics.oauth.filter.TokenAuthenticationFilter;
 import com.example.ics.oauth.handler.OAuth2AuthenticationFailureHandler;
 import com.example.ics.oauth.handler.OAuth2AuthenticationSuccessHandler;
@@ -22,7 +23,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -44,7 +44,7 @@ import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final CorsProperty corsProperty;
@@ -82,6 +82,9 @@ public class SecurityConfig {
                 .permitAll()
         );
 
+        http.exceptionHandling(handler -> handler.authenticationEntryPoint(new RestAuthenticationEntryPoint())
+                .accessDeniedHandler(tokenAccessDeniedHandler));
+
         http.oauth2Login(oauth -> oauth
                 .authorizationEndpoint(
                         authorizationEndpointConfig -> authorizationEndpointConfig
@@ -104,12 +107,11 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManager() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(passwordEncoder);
         provider.setUserDetailsService(userDetailService());
         return new ProviderManager(provider);
-//        return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
@@ -156,7 +158,7 @@ public class SecurityConfig {
         return new CustomUserDetailsService(userRepository);
     }
 
-    public class CustomAuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver {
+    public static class CustomAuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver {
         private final OAuth2AuthorizationRequestResolver defaultAuthorizationRequestResolver;
 
         public CustomAuthorizationRequestResolver(
