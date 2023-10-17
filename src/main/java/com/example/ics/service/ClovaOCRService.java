@@ -16,9 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-//import org.springframework.web.reactive.function.BodyInserters;
-//import org.springframework.web.reactive.function.client.WebClient;
-//import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,11 +44,17 @@ public class ClovaOCRService {
     private String version;
 
     private MultipartBodyBuilder makeBody(MultipartFile imageFile) {
+        if (imageFile == null || imageFile.getOriginalFilename() == null) {
+            throw new IllegalArgumentException("Image file or its filename is null.");
+        }
         String imgName = imageFile.getOriginalFilename();
-        List<Map<String, String>> images = List.of(Map.of("format", imgName.substring(imgName.lastIndexOf(".") + 1), "name", imgName.substring(0, imgName.lastIndexOf("."))));
-
+        if (imgName == null) {
+            throw new IllegalArgumentException("Image file or its filename is null.");
+        }
+        List<Map<String, String>> images = List.of(
+                Map.of("format", imgName.substring(imgName.lastIndexOf(".") + 1),
+                        "name", imgName.substring(0, imgName.lastIndexOf("."))));
         ClovaOcrMessage clovaOcrMessage = new ClovaOcrMessage(images, UUID.randomUUID().toString(), version, (int) System.currentTimeMillis());
-
         MultipartBodyBuilder builder = new MultipartBodyBuilder();
         builder.part("message", convertJson2Str(clovaOcrMessage));
         builder.part("file", imageFile.getResource());
@@ -62,7 +65,7 @@ public class ClovaOCRService {
         try {
             return objectMapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("gwj : convertJson2Str Error, " + e);
+            throw new IllegalArgumentException(e.getMessage());
         }
 
     }
@@ -78,14 +81,17 @@ public class ClovaOCRService {
                 .retrieve()
                 .bodyToMono(ClovaOCRResponse.class)
                 .onErrorResume(throwable -> {
-                    log.error("gwj : " + throwable.getMessage());
+                    log.error("ClovaOCRService : " + throwable.getMessage());
                     return Mono.empty();
                 });
     }
 
     public String ocrImageToBlock(Mono<ClovaOCRResponse> responseMono) {
         List<String> eachPageResult = new ArrayList<>();
-        responseMono.block().getImages().get(0).getFields().forEach(field -> eachPageResult.add(field.getInferText()));
+        ClovaOCRResponse ocrResponse = responseMono.block();
+        if (ocrResponse != null) {
+            ocrResponse.getImages().get(0).getFields().forEach(field -> eachPageResult.add(field.getInferText()));
+        }
         return String.join(" ", eachPageResult);
     }
 

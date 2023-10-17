@@ -20,11 +20,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<SiteUser> _user = this.userRepository.findSiteUserByUserId(username);
-        if (_user.isEmpty()) {
+        Optional<SiteUser> user = this.userRepository.findSiteUserByUserId(username);
+        if (user.isEmpty()) {
             throw new UsernameNotFoundException("사용자를 찾을 수 없다");
         }
-//        return new CustomUserDetails(_user.get());
-        return UserPrincipal.create(_user.get());
+        return UserPrincipal.create(user.get());
     }
 }
