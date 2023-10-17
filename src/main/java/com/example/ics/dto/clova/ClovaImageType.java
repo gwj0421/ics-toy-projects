@@ -25,6 +25,6 @@ public enum ClovaImageType {
                 return value.getExtension();
             }
         }
-        throw new RuntimeException("gwj : " + mimeType + " type is not format");
+        throw new IllegalArgumentException("gwj : " + mimeType + " type is not format");
     }
 }

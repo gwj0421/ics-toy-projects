@@ -1,4 +1,4 @@
-package com.example.ics.dto.chatGPT;
+package com.example.ics.dto.chatgpt;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

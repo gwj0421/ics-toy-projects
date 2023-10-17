@@ -1,4 +1,4 @@
-package com.example.ics.oauth.siteUserInfo;
+package com.example.ics.oauth.info;
 
 import java.util.Map;
 

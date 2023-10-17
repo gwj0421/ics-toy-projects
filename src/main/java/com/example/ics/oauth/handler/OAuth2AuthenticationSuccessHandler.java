@@ -8,8 +8,8 @@ import com.example.ics.oauth.dto.token.AuthTokenProvider;
 import com.example.ics.oauth.dto.token.UserRefreshToken;
 import com.example.ics.oauth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.example.ics.oauth.repository.UserRefreshTokenRepository;
-import com.example.ics.oauth.siteUserInfo.OAuth2UserInfo;
-import com.example.ics.oauth.siteUserInfo.OAuth2UserInfoFactory;
+import com.example.ics.oauth.info.OAuth2UserInfo;
+import com.example.ics.oauth.info.OAuth2UserInfoFactory;
 import com.example.ics.oauth.utils.CookieUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -57,6 +57,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
+    @Override
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         Optional<String> redirectUri = CookieUtil.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue);
@@ -134,11 +135,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 .anyMatch(authorizedRedirectUri -> {
                     // Only validate host and port. Let the clients use different paths if they want to
                     URI authorizedURI = URI.create(authorizedRedirectUri);
-                    if (authorizedURI.getHost().equalsIgnoreCase(clientRedirectUri.getHost())
-                            && authorizedURI.getPort() == clientRedirectUri.getPort()) {
-                        return true;
-                    }
-                    return false;
+                    return authorizedURI.getHost().equalsIgnoreCase(clientRedirectUri.getHost())
+                            && authorizedURI.getPort() == clientRedirectUri.getPort();
                 });
     }
 

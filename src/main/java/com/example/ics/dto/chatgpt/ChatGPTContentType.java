@@ -1,5 +1,8 @@
-package com.example.ics.dto.chatGPT;
+package com.example.ics.dto.chatgpt;
 
+import lombok.Getter;
+
+@Getter
 public enum ChatGPTContentType {
     JSON("JSON", "application/json");
 
@@ -13,11 +16,10 @@ public enum ChatGPTContentType {
 
 
     public static String getContentTypeAsDefault(String defaultContentType) {
-        for (ChatGPTContentType value : values()) {
-            if (value.format.equalsIgnoreCase(defaultContentType)) {
-                return value.contentType;
-            }
+        try {
+            return valueOf(defaultContentType.toUpperCase()).getContentType();
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("gwj : chatGPT 설정오류, 없는 컨텐츠 타입입니다");
         }
-        throw new RuntimeException("gwj : " + defaultContentType + " type is not format");
     }
 }

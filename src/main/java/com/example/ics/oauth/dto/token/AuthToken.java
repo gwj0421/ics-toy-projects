@@ -18,6 +18,7 @@ public class AuthToken {
     private final Key key;
 
     private static final String AUTHORITIES_KEY = "role";
+    private static final Claims EMPTYMAP = null;
 
     AuthToken(String id, Date expiry, Key key) {
         this.key = key;
@@ -47,7 +48,7 @@ public class AuthToken {
     }
 
     public boolean validate() {
-        return this.getTokenClaims() != null;
+        return this.getTokenClaims() != EMPTYMAP;
     }
 
     public Claims getTokenClaims() {
@@ -68,7 +69,7 @@ public class AuthToken {
         } catch (IllegalArgumentException e) {
             log.error("JWT token compact of handler are invalid.");
         }
-        return null;
+        return EMPTYMAP;
     }
 
     public Claims getExpiredTokenClaims() {
@@ -82,6 +83,6 @@ public class AuthToken {
             log.error("Expired JWT token.");
             return e.getClaims();
         }
-        return null;
+        return EMPTYMAP;
     }
 }

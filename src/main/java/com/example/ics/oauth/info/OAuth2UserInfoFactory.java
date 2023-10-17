@@ -1,4 +1,4 @@
-package com.example.ics.oauth.siteUserInfo;
+package com.example.ics.oauth.info;
 
 
 import com.example.ics.dto.user.ProviderType;
@@ -6,6 +6,9 @@ import com.example.ics.dto.user.ProviderType;
 import java.util.Map;
 
 public class OAuth2UserInfoFactory {
+    private OAuth2UserInfoFactory() {
+        throw new IllegalStateException("Making OAuth2UserInfoFactory utility class error");
+    }
     public static OAuth2UserInfo getOAuth2UserInfo(ProviderType providerType, Map<String, Object> attributes) {
         switch (providerType) {
             case GOOGLE: return new GoogleOAuth2UserInfo(attributes);

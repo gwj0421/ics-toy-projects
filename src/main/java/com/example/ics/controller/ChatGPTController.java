@@ -1,7 +1,9 @@
 package com.example.ics.controller;
 
-import com.example.ics.dto.chatGPT.ChatGPTResponse;
+import com.example.ics.dto.chatgpt.ChatGPTResponse;
 import com.example.ics.service.ChatGPTService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -11,45 +13,50 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import reactor.core.publisher.Mono;
-//import reactor.core.publisher.Mono;
 
 @Controller
 @RequestMapping("/text")
 @Slf4j
 public class ChatGPTController {
     private final ChatGPTService chatGPTService;
+    private static final boolean SYNCHRONOUS = true;
 
     public ChatGPTController(ChatGPTService chatGPTService) {
         this.chatGPTService = chatGPTService;
     }
 
+    @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
     @GetMapping("/summarizeText")
-    public String sumaryForm(Model model) {
+    public String sumaryForm(HttpServletRequest request, HttpServletResponse response, Model model) {
         model.addAttribute("textContent", "");
         model.addAttribute("summaryContent", null);
         return "summarizeTextForm";
     }
 
+    @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
     @PostMapping("/summarizeText")
     public String summaryContent(@RequestParam("textContent") String textContent, Model model) {
-        long start = System.currentTimeMillis();
-        Mono<ChatGPTResponse> summaryContentMono = chatGPTService.summaryContent(textContent);
         model.addAttribute("textContent", textContent);
-        // 동기
-        model.addAttribute("summaryResult", summaryContentMono.block().getChoices().get(0).getMessage().getContent());
+        Mono<ChatGPTResponse> summaryContentMono = chatGPTService.summaryContent(textContent);
 
-        // 비동기
-//        summaryContentMono.subscribe(summaryResult -> {
-//                    model.addAttribute("summaryResult", summaryResult.getChoices().get(0).getMessage().getContent());
-//                    log.info("gwj : received = " + summaryResult.getChoices().get(0).getMessage().getContent());
-//                },
-//                error -> {
-//                    log.info("gwj : error = " + error);
-//                    model.addAttribute("summaryResult", "");
-//                });
+        if (SYNCHRONOUS) {
+            // 동기
+            ChatGPTResponse contet = summaryContentMono.block();
+            if (contet != null) {
+                model.addAttribute("summaryResult", contet.getChoices().get(0).getMessage().getContent());
+            }
 
-        long end = System.currentTimeMillis();
-        log.info("gwj : chatGPT take time = " + (end - start) / 1000);
+        } else {
+            // 비동기
+            summaryContentMono.subscribe(
+                    summaryResult -> {
+                        if (summaryResult != null) {
+                            model.addAttribute("summaryResult", summaryResult.getChoices().get(0).getMessage().getContent());
+                        }
+                    }
+            );
+        }
+
         return "summarizeTextForm";
     }
 }

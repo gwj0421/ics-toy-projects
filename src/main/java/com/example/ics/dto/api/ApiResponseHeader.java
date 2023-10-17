@@ -6,8 +6,8 @@ import lombok.Getter;
 
 @Getter
 public class ApiResponseHeader {
-    private int code;
-    private String message;
+    private final int code;
+    private final String message;
 
     @JsonCreator
     public ApiResponseHeader(@JsonProperty("code") int code, @JsonProperty("message") String message) {

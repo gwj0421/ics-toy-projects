@@ -3,12 +3,22 @@ package com.example.ics.oauth.utils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.SerializationUtils;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.Base64;
 import java.util.Optional;
 
+@Slf4j
 public class CookieUtil {
+
+    private CookieUtil() {
+        throw new IllegalStateException("Making CookieUtil utility class error");
+    }
+
     public static Optional<Cookie> getCookie(HttpServletRequest request, String name) {
         Cookie[] cookies = request.getCookies();
 
@@ -51,10 +61,17 @@ public class CookieUtil {
     }
 
     public static <T> T deserialize(Cookie cookie, Class<T> cls) {
-        return cls.cast(
-                SerializationUtils.deserialize(
-                        Base64.getUrlDecoder().decode(cookie.getValue())
-                )
-        );
+        Object deserializedObject = null;
+        try {
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(Base64.getUrlDecoder().decode(cookie.getValue()));
+            ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+            deserializedObject = objectInputStream.readObject();
+        } catch (IOException e) {
+            log.error("deserialized error, "+e.getMessage());
+        } catch (ClassNotFoundException e) {
+            log.error("deserialized error, "+e.getMessage());
+        }
+
+        return cls.cast(deserializedObject);
     }
 }

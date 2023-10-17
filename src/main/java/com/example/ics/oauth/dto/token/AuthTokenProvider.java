@@ -14,7 +14,6 @@ import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
-import java.util.stream.Collectors;
 
 @Slf4j
 public class AuthTokenProvider {
@@ -38,20 +37,19 @@ public class AuthTokenProvider {
     }
 
     public Authentication getAuthentication(AuthToken authToken) {
-
         if(authToken.validate()) {
             Claims claims = authToken.getTokenClaims();
             Collection<? extends GrantedAuthority> authorities =
                     Arrays.stream(new String[]{claims.get(AUTHORITIES_KEY).toString()})
                             .map(SimpleGrantedAuthority::new)
-                            .collect(Collectors.toList());
+                            .toList();
 
             log.debug("claims subject := [{}]", claims.getSubject());
             User principal = new User(claims.getSubject(), "", authorities);
 
             return new UsernamePasswordAuthenticationToken(principal, authToken, authorities);
         } else {
-            throw new TokenValidFailedException();
+            throw new TokenValidFailedException("토큰 Claims 생성시 오류 발생");
         }
     }
 }

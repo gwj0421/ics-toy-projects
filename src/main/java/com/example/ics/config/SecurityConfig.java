@@ -2,7 +2,6 @@ package com.example.ics.config;
 
 import com.example.ics.config.properties.AppProperty;
 import com.example.ics.config.properties.CorsProperty;
-import com.example.ics.dto.user.RoleType;
 import com.example.ics.handler.CustomAuthenticationFailureHandler;
 import com.example.ics.oauth.dto.token.AuthTokenProvider;
 import com.example.ics.oauth.exception.RestAuthenticationEntryPoint;
@@ -26,6 +25,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -62,11 +62,13 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors(Customizer.withDefaults());
+        http.csrf(CsrfConfigurer::disable);
         http.httpBasic(HttpBasicConfigurer::disable);
 
         http.authorizeHttpRequests(auth ->
-                auth.requestMatchers("/text/**", "/image/**").hasAnyAuthority(RoleType.ADMIN.getCode(), RoleType.USER.getCode())
-                        .anyRequest().permitAll()
+//                auth.requestMatchers("/text/**", "/image/**").hasAnyAuthority(RoleType.ADMIN.getCode(), RoleType.USER.getCode())
+//                        .anyRequest().permitAll()
+                        auth.anyRequest().permitAll()
         );
 
         http.formLogin(login -> login.loginPage("/user/login")

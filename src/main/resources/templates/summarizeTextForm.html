@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <!-- layout.html을 상속받음 -->
-<html layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -9,6 +10,11 @@
 
 <!-- 상속된 템플릿에서 content 블록을 채워넣음 -->
 <th:block layout:fragment="content">
+    <div sec:authorize="isAuthenticated()">
+        <div th:text="|이름 : ${#authentication.principal.username}|"></div>
+        <div th:text="|인증된 플랫폼 : ${#authentication.principal.providerType}|"></div>
+        <div th:text="|역할 : ${#authentication.principal.roleType}|"></div>
+    </div>
     <form method="post">
         <textarea name="textContent" rows="10" cols="50"></textarea>
         <button type="submit">Summarize</button>

@@ -1,11 +1,14 @@
 package com.example.ics.dto.clova;
 
+import lombok.Getter;
+
+@Getter
 public enum ClovaContentType {
     JSON("JSON", "application/json"),
     MULTIPART("MULTIPART","multipart/form-data");
 
-    public String format;
-    public String contentType;
+    private final String format;
+    private final String contentType;
 
     ClovaContentType(String format, String contentType) {
         this.format = format;
@@ -13,11 +16,10 @@ public enum ClovaContentType {
     }
 
     public static String getContentTypeAsDefault(String defaultContentType) {
-        for (ClovaContentType value : values()) {
-            if (value.format.equalsIgnoreCase(defaultContentType)) {
-                return value.contentType;
-            }
+        try {
+            return valueOf(defaultContentType.toUpperCase()).getContentType();
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("gwj : " + defaultContentType + " type is not format");
         }
-        throw new RuntimeException("gwj : " + defaultContentType + " type is not format");
     }
 }

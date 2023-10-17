@@ -13,7 +13,9 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -25,17 +27,18 @@ public class UserPrincipal implements OAuth2User, UserDetails, OidcUser {
     private final ProviderType providerType;
     private final RoleType roleType;
     private final Collection<GrantedAuthority> authorities;
-    private Map<String, Object> attributes;
+
+    private Map<String, String> attributes;
 
     // OAuth2User
     @Override
-    public Map<String, Object> getAttribute(String name) {
-        return attributes;
+    public Map<String, Object> getAttributes() {
+        return new HashMap<>(attributes);
     }
 
     @Override
     public String getName() {
-        return (String) attributes.get("name");
+        return attributes.get("name");
     }
 
     // UserDetails
@@ -73,7 +76,7 @@ public class UserPrincipal implements OAuth2User, UserDetails, OidcUser {
 
     @Override
     public Map<String, Object> getClaims() {
-        return null;
+        return Collections.emptyMap();
     }
 
     @Override
@@ -99,7 +102,10 @@ public class UserPrincipal implements OAuth2User, UserDetails, OidcUser {
 
     public static UserPrincipal create(SiteUser user, Map<String, Object> attributes) {
         UserPrincipal userPrincipal = create(user);
-        userPrincipal.setAttributes(attributes);
+        userPrincipal.setAttributes(
+                attributes.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, entry -> String.valueOf(entry.getValue())))
+        );
 
         return userPrincipal;
     }

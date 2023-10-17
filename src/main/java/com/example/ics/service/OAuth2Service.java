@@ -14,9 +14,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -59,14 +56,7 @@ public class OAuth2Service {
     }
 
     private void processLogin(HttpServletRequest request, HttpServletResponse response, AuthReqModel authReqModel) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        authReqModel.getId(),
-                        authReqModel.getPassword()
-                )
-        );
         String userId = authReqModel.getId();
-        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         Date now = new Date();
 

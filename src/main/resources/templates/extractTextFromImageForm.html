@@ -2,7 +2,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <div layout:fragment="content">
     <div>
-        <form th:action="@{/image/convert}" method="post" enctype="multipart/form-data">
+        <form th:action="@{/image/extractTextFromImage}" method="post" enctype="multipart/form-data">
             <input type="file" name="imageFiles" multiple/>
             <button type="submit">upload</button>
         </form>
