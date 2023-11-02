@@ -15,8 +15,9 @@
         <li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/user/dashboard}">dashboard</a></li>
         <li sec:authorize="isAuthenticated()"><a th:href="@{/image/extractTextFromImage}"
                                                  sec:authorize="isAuthenticated()">Extract text from image</a></li>
-        <li sec:authorize="isAuthenticated()"><a th:href="@{/text/summarizeText}" sec:authorize="isAuthenticated()">Summarize
-            text</a></li>
+        <li sec:authorize="isAuthenticated()"><a th:href="@{/text/summarizeText}" sec:authorize="isAuthenticated()">Summarize text</a></li>
+<!--        <li sec:authorize="isAuthenticated()"><a th:href="@{/text/convertCase}" sec:authorize="isAuthenticated()">Convert case</a></li>-->
+        <li><a th:href="@{/text/convertCase}">Convert case</a></li>
 
     </ul>
 </th:block>

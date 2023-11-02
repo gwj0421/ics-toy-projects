@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!-- layout.html을 상속받음 -->
+<html layout:decorate="~{layout}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ConvertCase</title>
+    <style>
+        .horizontal-select {
+            display: inline-block;
+            margin-right: 10px; /* 선택적으로 간격을 지정할 수 있음 */
+        }
+    </style>
+</head>
+
+<!-- 상속된 템플릿에서 content 블록을 채워넣음 -->
+<th:block layout:fragment="content">
+    <div sec:authorize="isAuthenticated()">
+        <div th:text="|이름 : ${#authentication.principal.username}|"></div>
+        <div th:text="|인증된 플랫폼 : ${#authentication.principal.providerType}|"></div>
+        <div th:text="|역할 : ${#authentication.principal.roleType}|"></div>
+    </div>
+    <form method="post">
+        <textarea name="textContent" id="textContent" rows="10" cols="50"></textarea>
+        <table>
+            <tr>
+                <td>original case</td>
+                <td>result case</td>
+            </tr>
+            <tr>
+                <td><select name="beforeCase" id="beforeCase" size="5" class="horizontal-select">
+                    <option value="original" selected="selected">Plain text</option>
+                    <option value="camel">camelCase</option>
+                    <option value="kebab">kebab-case</option>
+                    <option value="snakeUp">SNAKE_CASE</option>
+                    <option value="snakeDown">snake_case</option>
+                    <option value="pascal">PascalCase</option>
+                </select></td>
+                <td><select name="afterCase" id="afterCase" size="5" class="horizontal-select">
+                    <option value="original">Plain text</option>
+                    <option value="camel" selected="selected">camelCase</option>
+                    <option value="kebab">kebab-case</option>
+                    <option value="snakeUp">SNAKE_CASE</option>
+                    <option value="snakeDown">snake_case</option>
+                    <option value="pascal">PascalCase</option>
+                </select></td>
+                <td>
+                    <button type="submit">Convert</button>
+                </td>
+            </tr>
+        </table>
+
+    </form>
+
+    <div th:if="${convertResult}">
+        <h2>Convert Result:</h2>
+        <textarea th:text="${convertResult}" rows="10" cols="50"></textarea>
+    </div>
+</th:block>
