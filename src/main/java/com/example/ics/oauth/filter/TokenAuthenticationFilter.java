@@ -2,7 +2,7 @@ package com.example.ics.oauth.filter;
 
 import com.example.ics.oauth.dto.token.AuthToken;
 import com.example.ics.oauth.dto.token.AuthTokenProvider;
-import com.example.ics.oauth.utils.HeaderUtil;
+import com.example.ics.utils.HeaderUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

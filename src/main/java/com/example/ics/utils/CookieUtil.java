@@ -1,4 +1,4 @@
-package com.example.ics.oauth.utils;
+package com.example.ics.utils;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

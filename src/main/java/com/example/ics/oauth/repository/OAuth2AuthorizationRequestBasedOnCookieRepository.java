@@ -1,6 +1,6 @@
 package com.example.ics.oauth.repository;
 
-import com.example.ics.oauth.utils.CookieUtil;
+import com.example.ics.utils.CookieUtil;
 import com.nimbusds.oauth2.sdk.util.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

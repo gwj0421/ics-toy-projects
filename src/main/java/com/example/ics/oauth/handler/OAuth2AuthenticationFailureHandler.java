@@ -1,7 +1,7 @@
 package com.example.ics.oauth.handler;
 
 import com.example.ics.oauth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
-import com.example.ics.oauth.utils.CookieUtil;
+import com.example.ics.utils.CookieUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

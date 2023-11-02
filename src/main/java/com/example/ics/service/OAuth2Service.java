@@ -7,7 +7,7 @@ import com.example.ics.oauth.dto.token.AuthToken;
 import com.example.ics.oauth.dto.token.AuthTokenProvider;
 import com.example.ics.oauth.dto.token.UserRefreshToken;
 import com.example.ics.oauth.repository.UserRefreshTokenRepository;
-import com.example.ics.oauth.utils.CookieUtil;
+import com.example.ics.utils.CookieUtil;
 import com.example.ics.repository.SiteUserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -10,7 +10,7 @@ import com.example.ics.oauth.repository.OAuth2AuthorizationRequestBasedOnCookieR
 import com.example.ics.oauth.repository.UserRefreshTokenRepository;
 import com.example.ics.oauth.info.OAuth2UserInfo;
 import com.example.ics.oauth.info.OAuth2UserInfoFactory;
-import com.example.ics.oauth.utils.CookieUtil;
+import com.example.ics.utils.CookieUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
