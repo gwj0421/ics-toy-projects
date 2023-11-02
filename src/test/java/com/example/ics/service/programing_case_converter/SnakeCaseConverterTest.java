@@ -1,5 +1,6 @@
-package com.example.ics.service.programing_case_service;
+package com.example.ics.service.programing_case_converter;
 
+import com.example.ics.programing_case_converter.SnakeCaseConverter;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,11 +1,12 @@
-package com.example.ics.service.programing_case_service;
+package com.example.ics.service.programing_case_converter;
 
+import com.example.ics.programing_case_converter.OriginalCaseConverter;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class KebabCaseConverterTest {
-    private KebabCaseConverter kebabCaseConverter = new KebabCaseConverter();
+class OriginalCaseConverterTest {
+    private OriginalCaseConverter originalCaseConverter = new OriginalCaseConverter();
     private String original;
     private String camel;
     private String kebab;
@@ -25,28 +26,28 @@ class KebabCaseConverterTest {
     }
 
     @Test
-    void convertKebab2Original() {
+    void convertOriginal2Camel() {
         // when
-        String originalResult = kebabCaseConverter.convertOriginal(kebab);
+        String result = originalCaseConverter.convertCamel(original);
 
         // then
-        Assertions.assertThat(originalResult).isEqualTo(original);
+        Assertions.assertThat(result).isEqualTo(camel);
     }
 
     @Test
-    void convertKebab2Camel() {
+    void convertOriginal2Kebab() {
         // when
-        String camelResult = kebabCaseConverter.convertCamel(kebab);
+        String result = originalCaseConverter.convertKebab(original);
 
         // then
-        Assertions.assertThat(camelResult).isEqualTo(camel);
+        Assertions.assertThat(result).isEqualTo(kebab);
     }
 
     @Test
-    void convertKebab2Snake() {
+    void convertOriginal2Snake() {
         // when
-        String snakeUpResult = kebabCaseConverter.convertSnake(kebab, true);
-        String snakeDownResult = kebabCaseConverter.convertSnake(kebab, false);
+        String snakeUpResult = originalCaseConverter.convertSnake(original,true);
+        String snakeDownResult = originalCaseConverter.convertSnake(original,false);
 
         // then
         Assertions.assertThat(snakeUpResult).isEqualTo(upSnake);
@@ -54,12 +55,11 @@ class KebabCaseConverterTest {
     }
 
     @Test
-    void convertKebab2Pascal() {
+    void convertOriginal2Pascal() {
         // when
-        String pascalResult = kebabCaseConverter.convertPascal(kebab);
+        String pascalResult = originalCaseConverter.convertPascal(original);
 
         // then
         Assertions.assertThat(pascalResult).isEqualTo(pascal);
     }
-
 }

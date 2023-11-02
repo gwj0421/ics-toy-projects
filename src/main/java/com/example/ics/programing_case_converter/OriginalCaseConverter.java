@@ -1,7 +1,6 @@
-package com.example.ics.service.programing_case_service;
+package com.example.ics.programing_case_converter;
 
-import static com.example.ics.utils.StringUtil.removeMultipleSpace;
-import static com.example.ics.utils.StringUtil.removeSpecialCharacters;
+import static com.example.ics.utils.StringUtil.*;
 
 public class OriginalCaseConverter extends ProgramingCase {
     @Override
@@ -11,10 +10,7 @@ public class OriginalCaseConverter extends ProgramingCase {
         String[] words = original.toLowerCase().split(" ");
         StringBuilder camelText = new StringBuilder(words[0]);
         for (int i = 1; i < words.length; i++) {
-            stringBuilder.append(words[i]);
-            stringBuilder.setCharAt(0, Character.toUpperCase(stringBuilder.charAt(0)));
-            camelText.append(stringBuilder.toString());
-            stringBuilder.setLength(0);
+            camelText.append(makeFirstLetter2UpperCase(stringBuilder,words[i]));
         }
         return camelText.toString();
     }
@@ -38,10 +34,6 @@ public class OriginalCaseConverter extends ProgramingCase {
 
     @Override
     public String convertPascal(String original) {
-        stringBuilder.append(convertCamel(original));
-        stringBuilder.setCharAt(0, Character.toUpperCase(stringBuilder.charAt(0)));
-        String pascalText = stringBuilder.toString();
-        stringBuilder.setLength(0);
-        return pascalText;
+        return makeFirstLetter2UpperCase(stringBuilder,convertCamel(original));
     }
 }

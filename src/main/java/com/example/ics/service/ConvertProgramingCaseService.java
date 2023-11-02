@@ -1,8 +1,8 @@
 package com.example.ics.service;
 
 import com.example.ics.dto.programing_case.ProgramingCaseType;
-import com.example.ics.service.programing_case_service.ProgramingCase;
-import com.example.ics.service.programing_case_service.ProgramingCaseConverterFactory;
+import com.example.ics.programing_case_converter.ProgramingCase;
+import com.example.ics.programing_case_converter.ProgramingCaseConverterFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

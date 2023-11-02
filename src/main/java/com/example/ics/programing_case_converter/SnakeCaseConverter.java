@@ -1,4 +1,6 @@
-package com.example.ics.service.programing_case_service;
+package com.example.ics.programing_case_converter;
+
+import static com.example.ics.utils.StringUtil.makeFirstLetter2UpperCase;
 
 public class SnakeCaseConverter extends ProgramingCase{
     private final boolean isUp;
@@ -13,12 +15,7 @@ public class SnakeCaseConverter extends ProgramingCase{
         if (isUp) {
             originalText = originalText.toLowerCase();
         }
-        stringBuilder.append(originalText);
-        stringBuilder.setCharAt(0, Character.toUpperCase(stringBuilder.charAt(0)));
-        originalText = stringBuilder.toString();
-        stringBuilder.setLength(0);
-
-        return originalText;
+        return makeFirstLetter2UpperCase(stringBuilder,originalText);
     }
 
     @Override
@@ -30,10 +27,7 @@ public class SnakeCaseConverter extends ProgramingCase{
         StringBuilder camelText = new StringBuilder(words[0]);
 
         for (int i = 1; i < words.length; i++) {
-            stringBuilder.append(words[i]);
-            stringBuilder.setCharAt(0, Character.toUpperCase(stringBuilder.charAt(0)));
-            camelText.append(stringBuilder.toString());
-            stringBuilder.setLength(0);
+            camelText.append(makeFirstLetter2UpperCase(stringBuilder,words[i]));
         }
         return camelText.toString();
     }
@@ -55,10 +49,7 @@ public class SnakeCaseConverter extends ProgramingCase{
         StringBuilder pascalText = new StringBuilder();
 
         for (int i = 0; i < words.length; i++) {
-            stringBuilder.append(words[i]);
-            stringBuilder.setCharAt(0, Character.toUpperCase(stringBuilder.charAt(0)));
-            pascalText.append(stringBuilder.toString());
-            stringBuilder.setLength(0);
+            pascalText.append(makeFirstLetter2UpperCase(stringBuilder,words[i]));
         }
         return pascalText.toString();
     }
